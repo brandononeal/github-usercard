@@ -11,7 +11,6 @@ axios.get('https://api.github.com/users/brandononeal')
     const githubCard = document.querySelector('.cards')
     githubCard.append(cardMaker(response.data))
   })
-
   .catch(err => {
     console.log(err)
   })
