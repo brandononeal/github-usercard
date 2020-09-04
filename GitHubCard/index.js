@@ -7,12 +7,13 @@ import axios from 'axios'
 */
 
 axios.get('https://api.github.com/users/brandononeal')
-  .then(data => {
-    debugger
-    return data
+  .then(response => {
+    const githubCard = document.querySelector('.cards')
+    githubCard.append(cardMaker(response.data))
   })
+
   .catch(err => {
-    debugger
+    console.log(err)
   })
 
 /*
@@ -28,8 +29,6 @@ axios.get('https://api.github.com/users/brandononeal')
     and append the returned markup to the DOM as a child of .cards
 */
 
-
-
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -41,7 +40,24 @@ axios.get('https://api.github.com/users/brandononeal')
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell"
+];
+
+followersArray.forEach(followers => {
+  axios.get(`https://api.github.com/users/${followers}`)
+  .then(response => {
+    const githubCard = document.querySelector('.cards')
+    githubCard.append(cardMaker(response.data))
+  })
+  .catch(err => {
+    console.log(err)
+  })
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -95,17 +111,14 @@ function cardMaker(cardData){
   cardImg.src = cardData.avatar_url
   cardName.textContent = cardData.name
   cardUserName.textContent = cardData.login
-  cardLocation.textContent = cardData.location
-  cardProfileLink.href = cardData.html_url
-  cardProfileLink.textContent = cardData.html_url
-  cardFollowers.textContent = cardData.followers
-  cardFollowing.textContent = cardData.following
-  cardBio.textContent = cardData.bio
+  cardLocation.textContent = `Location: ${cardData.location}`
+  cardProfile.innerHTML = `Profile: <a href=${cardData.html_url}>${cardData.html_url}</a>`
+  cardFollowers.textContent = `Followers: ${cardData.followers}`
+  cardFollowing.textContent = `Following: ${cardData.following}`
+  cardBio.textContent = `Bio: ${cardData.bio}`
   
   return card
 }
-
-cardMaker()
 
 /*
   List of LS Instructors Github username's:
